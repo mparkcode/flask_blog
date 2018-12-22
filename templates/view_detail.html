@@ -9,7 +9,11 @@
 <body>
     <h1>Session Detail</h1>
 
-    {{session}}
+    {% for k,v in session.items() %}
+        {% if k != '_id' %}
+            <p>{{k}} : {% if v.startswith('http') %}<a href="{{v}}" target="_blank">{{v}}</a>{% else %}{{v}}{% endif %}</p>
+        {% endif %}
+    {% endfor %}
 
     
 </body>
