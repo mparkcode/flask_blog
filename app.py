@@ -20,11 +20,6 @@ def view_all():
     sessions = mongo.db.study_session.find()
     return render_template('view_all.html', sessions = sessions)
 
-@app.route("/view_by_language/<language>")
-def view_by_language(language):
-    sessions = mongo.db.study_session.find({"language" : language})
-    return render_template('view_all.html', sessions = sessions)
-
 @app.route("/add_a_session", methods=["POST", "GET"])
 def add_a_session():
     if request.method == "POST":
