@@ -2,7 +2,10 @@ from flask import render_template, request, redirect, url_for
 from flask_blog import app, mongo
 from bson.objectid import ObjectId
 from flask_uploads import UploadSet, configure_uploads, IMAGES
-
+import random
+import string
+import boto3
+import os
 
 photos = UploadSet('photos', IMAGES)
 
@@ -22,25 +25,26 @@ def view_all():
 def save_picture_to_s3(form_picture):          
     random_hex = ''.join([random.choice(string.digits) for n in range(8)])    
     _, f_ext = os.path.splitext(form_picture.filename)  
-    picture_fn = random_hex + f_ext
+    picture_fn = "img" + random_hex + f_ext
     s3 = boto3.resource('s3')
-    s3.Bucket('mpark-flask-training-calendar').put_object(Key="static/workout_pics/" + picture_fn, Body=form_picture)
+    s3.Bucket('flaskblog').put_object(Key="static/img/" + picture_fn, Body=form_picture)
     return picture_fn 
 
 @app.route("/add_a_session", methods=["POST", "GET"])
 def add_a_session():
-    form_values = request.form.to_dict()
+    
     if request.method == "POST":
+        form_values = request.form.to_dict()
         for photo in request.files:
-            filename = "img/" + photos.save(request.files[photo])
+            filename = save_picture_to_s3(request.files[photo])
             for k,v in form_values.items():
                 if k.startswith(photo):
                     form_values[k]=filename
                     nk = k.split().pop()
-                    " ".join(nk)
+                    " ".join(k)
                     form_values[nk] = form_values.pop(k)
         print(form_values)
-        # mongo.db.study_session.insert_one(form_values)
+        mongo.db.study_session.insert_one(form_values)
         return "post route"
     else:
         return render_template("add_a_session.html")

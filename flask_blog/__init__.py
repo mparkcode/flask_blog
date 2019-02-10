@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.config["FLASKS3_BUCKET_NAME"] = os.environ.get("AWS_STORAGE_BUCKET_NAME")
-app.config['FLASKS3_ACTIVE'] = False
+app.config['FLASKS3_ACTIVE'] = True
 mongo = PyMongo(app)
 s3 = FlaskS3(app)
 
