@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Add a session</h2>
-    <form action="{{ url_for('add_a_session') }}" method="post">
+    <form enctype="multipart/form-data" action="{{ url_for('add_a_session') }}" method="post">
         <div id="study_form">
             <div id="input_group0">
                 <p><input id="key0" type="text" value="date" disabled><input id="value0" type="date"></p>

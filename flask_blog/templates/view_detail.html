@@ -4,7 +4,11 @@
 
     {% for k,v in session.items() %}
         {% if k != '_id' %}
-            <p>{{k}} : {% if v.startswith('http') %}<a href="{{v}}" target="_blank">{{v}}</a>{% else %}{{v}}{% endif %}</p>
+            {% if v.startswith('img/') %}
+                <p>{{k}} : <img src="{{url_for('static', filename=v)}}"></p>
+            {% else %}
+                <p>{{k}} : {% if v.startswith('http') %}<a href="{{v}}" target="_blank">{{v}}</a>{% else %}{{v}}{% endif %}</p>
+            {% endif %}
         {% endif %}
     {% endfor %}
 
