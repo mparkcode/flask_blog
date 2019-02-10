@@ -1,14 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for
-import os
-from flask_pymongo import PyMongo
+from flask import render_template, request, redirect, url_for
+from flask_blog import app, mongo
 from bson.objectid import ObjectId
 
-app = Flask(__name__)
-
-app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
-app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
-
-mongo = PyMongo(app)
 
 @app.route("/")
 def index():
@@ -34,7 +27,3 @@ def add_a_session():
 def view_detail(session_id):
     session = mongo.db.study_session.find_one({"_id": ObjectId(session_id)})
     return render_template("view_detail.html", session=session)
-
-
-if __name__ == "__main__":
-    app.run(host=os.getenv('IP', '127.0.0.1'), port=int(os.getenv('PORT', 5000)), debug=True)

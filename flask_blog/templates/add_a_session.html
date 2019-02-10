@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Add a session</h2>
+    <form action="{{ url_for('add_a_session') }}" method="post">
+        <div id="study_form">
+            <div id="input_group0">
+                <p><input id="key0" type="text" value="date" disabled><input id="value0" type="date"></p>
+                <input type='hidden' id="field_to_be_submitted0">
+            </div>
+            <div id="input_group1">
+                <p><input id="key1" type="text" value="summary" disabled><input id="value1" type="text" required></p>
+                <input type='hidden' id="field_to_be_submitted1">
+            </div>
+        </div>
+        <p onclick="add_field('text');">+Note</p>
+        <p onclick="add_field('url');">+Link</p>
+        <p onclick="add_field('file');">+File</p>
+        <p>Here's a test</p>
+        <input type="submit" value="submit" onclick="changeName()">
+    </form>
+    
+{% endblock content %}

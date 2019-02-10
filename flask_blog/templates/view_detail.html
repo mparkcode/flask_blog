@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Session Detail</h2>
+
+    {% for k,v in session.items() %}
+        {% if k != '_id' %}
+            <p>{{k}} : {% if v.startswith('http') %}<a href="{{v}}" target="_blank">{{v}}</a>{% else %}{{v}}{% endif %}</p>
+        {% endif %}
+    {% endfor %}
+
+    
+{% endblock content %}
