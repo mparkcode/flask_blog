@@ -44,7 +44,7 @@ def add_a_session():
                     " ".join(k)
                     form_values[nk] = form_values.pop(k)
         print(form_values)
-        mongo.db.study_session.insert_one(form_values)
+        mongo.db.post.insert_one(form_values)
         return "post route"
     else:
         return render_template("add_a_session.html")
