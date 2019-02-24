@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Post Detail</h2>
+    <input type="hidden" id="postId" value="{{post_id}}">
     <div id="post_detail">
         {% for key,value in post.items() %}
             {% if key != '_id' %}
@@ -8,12 +9,16 @@
                     {% for a,b in post[key][k].items() %}
 
                         {% if b.startswith('img') %}
-                            <div id="{{key}}">  
-                                <p>{{a}} : <img src="{{url_for('static', filename='img/'+b)}}"> {% if key|int > 2  %}<span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}</p>
+                            <div id="group{{key}}">  
+                                <p id="{{key}}title" onclick="editNote('{{key}}');">{{a}}</p>
+                                <p><img src="{{url_for('static', filename='img/'+b)}}"> </p>
+                                {% if key|int > 2  %}<span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}
                             </div>
                         {% else %}
-                            <div id="{{key}}">
-                                <p>{{a}} : {% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %}{% if key|int > 2  %} <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}</p>
+                            <div id="group{{key}}">
+                                <p id="{{key}}title" onclick="editNote('{{key}}');">{{a}}</p>
+                                <p id="{{key}}content">{% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %}</p>
+                                {% if key|int > 2  %} <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}
                             </div>
                         {% endif %}
 

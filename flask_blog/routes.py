@@ -34,7 +34,6 @@ def save_picture_to_s3(form_picture):
 def add_a_post():
     post={}
     post["1"] = {'date': {'date':datetime.date.today().strftime("%Y-%m-%d")}}
-    print(post)
     p = mongo.db.posts.insert(post)
     return redirect(url_for('view_detail', post_id=p))
 
@@ -108,3 +107,9 @@ def add_ajax_note(post_id, key, value):
     print(post)
     mongo.db.posts.update({"_id": ObjectId(post_id)}, post)
     return render_template("new_note.html", key=str(len(post)), a=key, b=value, post_id=post_id)
+
+@app.route("/update_post/<post_id>", methods=["POST"])
+def update_post(post_id):
+    print(post_id)
+    print(request.get_json())
+    return "Hi"

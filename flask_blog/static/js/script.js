@@ -99,20 +99,40 @@ function showNoteForm(){
     document.getElementById('note_form').style.display = 'block';
 }
 
-function addAjaxNote(postId){
-    console.log(`adding a note to ${postId}`)
-    key = document.getElementById('key').value
-    value = document.getElementById('value').value
-    console.log(`${key} - ${value}`)
-    // xhr.open('POST', '/add_note/' + postId);
-    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    // xhr.onload = function() {
-    //     if (xhr.status === 200) {
-            
-    //     }
-    //     else if (xhr.status !== 200) {
-    //         alert('Fail');
-    //     }
-    // };
-    // xhr.send();
+function editNote(key){
+    text = document.getElementById(`${key}title`).innerHTML;
+    document.getElementById(`${key}title`).outerHTML = `<input id='${key}title' type='text' value='${text}' required>`;
+}
+
+document.onclick = function(){
+    let postId = document.getElementById('postId').value;
+    let post = {};
+    let fields = document.querySelectorAll("[id*='group']");
+    for(let i = 1; i <= fields.length; i++){
+        let noteTitle;
+        let v;
+        if(document.getElementById(`${i}title`).nodeName == "INPUT"){
+            noteTitle = document.getElementById(`${i}title`).value;
+        } else {
+            noteTitle = document.getElementById(`${i}title`).textContent;
+        }
+        if(document.getElementById(`${i}content`).nodeName == "INPUT"){
+            v = document.getElementById(`${i}content`).value;
+        } else {
+            v = document.getElementById(`${i}content`).textContent;
+        }
+        post[i] = {"note" : { [noteTitle] : v}}
+    }
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', `/update_post/${postId}`);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = function(data) {
+        if (xhr.status === 200) {
+            let data = JSON.stringify(post)
+        }
+        else if (xhr.status !== 200) {
+            alert('Fail');
+        }
+    };
+    xhr.send();
 }
