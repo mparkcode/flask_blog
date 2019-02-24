@@ -69,3 +69,50 @@ function deleteElement(key, postId){
     };
     xhr.send();
 }
+
+function checkForNote(postId){
+    if(document.getElementById('key').value != "" || document.getElementById('key').value != ""){
+        console.log(`adding a note to ${postId}`)
+        key = document.getElementById('key').value
+        value = document.getElementById('value').value
+        console.log(`${key} - ${value}`)
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', `/add_note/${postId}/${key}/${value}`);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function(data) {
+            if (xhr.status === 200) {
+                document.getElementById('post_detail').innerHTML += xhr.response;
+                document.getElementById('key').value = "";
+                document.getElementById('value').value = "";
+            }
+            else if (xhr.status !== 200) {
+                alert('Fail');
+            }
+        };
+        xhr.send();
+    } else {
+        console.log("Need a key and value");
+    }
+}
+
+function showNoteForm(){
+    document.getElementById('note_form').style.display = 'block';
+}
+
+function addAjaxNote(postId){
+    console.log(`adding a note to ${postId}`)
+    key = document.getElementById('key').value
+    value = document.getElementById('value').value
+    console.log(`${key} - ${value}`)
+    // xhr.open('POST', '/add_note/' + postId);
+    // xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    // xhr.onload = function() {
+    //     if (xhr.status === 200) {
+            
+    //     }
+    //     else if (xhr.status !== 200) {
+    //         alert('Fail');
+    //     }
+    // };
+    // xhr.send();
+}

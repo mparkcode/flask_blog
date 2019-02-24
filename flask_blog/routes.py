@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, jsonify
 from flask_blog import app, mongo
 from bson.objectid import ObjectId
 from flask_uploads import UploadSet, configure_uploads, IMAGES
@@ -6,6 +6,7 @@ import random
 import string
 import boto3
 import os
+import datetime
 
 photos = UploadSet('photos', IMAGES)
 
@@ -31,27 +32,11 @@ def save_picture_to_s3(form_picture):
 
 @app.route("/add_a_post", methods=["POST", "GET"])
 def add_a_post():
-    
-    if request.method == "POST":
-        post={}
-        form_values = request.form.to_dict()
-        post["1"] = {'date': {'date':form_values['date']}}
-        post["2"] = {'title': {'title':form_values['summary']}}
-        
-        for photo in request.files:
-            filename = save_picture_to_s3(request.files[photo])
-            for k,v in form_values.items():
-                if k.startswith(photo):
-                    form_values[k]=filename
-                    nk = k.split().pop()
-                    " ".join(k)
-                    form_values[nk] = form_values.pop(k)
-
-        print(post)
-        p = mongo.db.posts.insert(post)
-        return redirect(url_for('view_detail', post_id=p))
-    else:
-        return render_template("add_a_post.html")
+    post={}
+    post["1"] = {'date': {'date':datetime.date.today().strftime("%Y-%m-%d")}}
+    print(post)
+    p = mongo.db.posts.insert(post)
+    return redirect(url_for('view_detail', post_id=p))
 
 @app.route("/view_detail/<post_id>")
 def view_detail(post_id):
@@ -114,3 +99,12 @@ def delete(post_id, key):
     print(post)
     mongo.db.posts.update({"_id": ObjectId(post_id)}, post)
     return redirect(url_for('view_detail', post_id=post['_id']))
+
+@app.route("/add_note/<post_id>/<key>/<value>", methods=["POST"])
+def add_ajax_note(post_id, key, value):
+    post = mongo.db.posts.find_one({"_id": ObjectId(post_id)})
+    print(post)
+    post[str(len(post))] = {'note' :{key:value}}
+    print(post)
+    mongo.db.posts.update({"_id": ObjectId(post_id)}, post)
+    return render_template("new_note.html", key=str(len(post)), a=key, b=value, post_id=post_id)

@@ -1,26 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
     <h2>Post Detail</h2>
-    {% for key,value in post.items() %}
-        {% if key != '_id' %}
-            {% for k,v in post[key].items() %}
-                {% for a,b in post[key][k].items() %}
+    <div id="post_detail">
+        {% for key,value in post.items() %}
+            {% if key != '_id' %}
+                {% for k,v in post[key].items() %}
+                    {% for a,b in post[key][k].items() %}
 
-                    {% if b.startswith('img') %}
-                        <div id="{{key}}">  
-                            <p>{{a}} : <img src="{{url_for('static', filename='img/'+b)}}"> <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span></p>
-                        </div>
-                    {% else %}
-                        <div id="{{key}}">
-                            <p>{{a}} : {% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %} <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span></p>
-                        </div>
-                    {% endif %}
+                        {% if b.startswith('img') %}
+                            <div id="{{key}}">  
+                                <p>{{a}} : <img src="{{url_for('static', filename='img/'+b)}}"> {% if key|int > 2  %}<span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}</p>
+                            </div>
+                        {% else %}
+                            <div id="{{key}}">
+                                <p>{{a}} : {% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %}{% if key|int > 2  %} <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}</p>
+                            </div>
+                        {% endif %}
 
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-    <a href="{{url_for('add_note', post_id=post._id)}}">add note</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div id="note_form">
+        <p><input id="key" type="text" required><input id="value" type="text" required></p>
+        <input type='hidden' id="field_to_be_submitted">
+    </div>
+    <p id="add_note_clicker" onclick="checkForNote('{{post_id}}'); showNoteForm();">add note</a>
     <a href="{{url_for('add_picture', post_id=post._id)}}">add picture</a>
 
     

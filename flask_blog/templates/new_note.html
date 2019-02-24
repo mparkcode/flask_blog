@@ -1,0 +1,3 @@
+<div id="{{key}}">
+    <p>{{a}} : {% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %}{% if key|int > 2  %} <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span>{% endif %}</p>
+</div>
