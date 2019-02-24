@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Add a post</h2>
+    <form enctype="multipart/form-data" action="{{ url_for('add_a_post') }}" method="post">
+        <div id="study_form">
+            <div id="input_group0">
+                <p><input id="key0" type="text" value="date" disabled><input id="value0" type="date"></p>
+                <input type='hidden' id="field_to_be_submitted0">
+            </div>
+            <div id="input_group1">
+                <p><input id="key1" type="text" value="summary" disabled><input id="value1" type="text" required></p>
+                <input type='hidden' id="field_to_be_submitted1">
+            </div>
+        </div>
+        <input type="submit" value="submit" onclick="changeName()">
+    </form>
+    
+{% endblock content %}

@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h2>Session Detail</h2>
+    <h2>Post Detail</h2>
+    {% for key,value in post.items() %}
+        {% if key != '_id' %}
+            {% for k,v in post[key].items() %}
+                {% for a,b in post[key][k].items() %}
 
-    {% for k,v in session.items() %}
-        {% if k != '_id' %}
-            {% if v.startswith('img') %}
-                <p>{{k}} : <img src="{{url_for('static', filename='img/'+v)}}"></p>
-            {% else %}
-                <p>{{k}} : {% if v.startswith('http') %}<a href="{{v}}" target="_blank">{{v}}</a>{% else %}{{v}}{% endif %}</p>
-            {% endif %}
+                    {% if b.startswith('img') %}
+                        <div id="{{key}}">  
+                            <p>{{a}} : <img src="{{url_for('static', filename='img/'+b)}}"> <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span></p>
+                        </div>
+                    {% else %}
+                        <div id="{{key}}">
+                            <p>{{a}} : {% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %} <span onclick="deleteElement('{{key}}', '{{post_id}}')">DELETE</span></p>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
         {% endif %}
     {% endfor %}
+    <a href="{{url_for('add_note', post_id=post._id)}}">add note</a>
+    <a href="{{url_for('add_picture', post_id=post._id)}}">add picture</a>
 
     
 {% endblock content %}

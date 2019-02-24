@@ -34,6 +34,16 @@ function changeName() {
     }
 }
 
+function addNote() {
+    document.getElementById(`field_to_be_submitted`).setAttribute("name", document.getElementById(`key`).value);
+    document.getElementById(`field_to_be_submitted`).setAttribute("value", document.getElementById(`value`).value);
+}
+
+function addPicture(){
+    document.getElementById(`field_to_be_submitted`).setAttribute("name", "photo " + document.getElementById(`key`).value);
+    document.getElementById(`field_to_be_submitted`).setAttribute("value", document.getElementById(`value`).value);
+}
+
 Date.prototype.toDateInputValue = (function () {
     var local = new Date(this);
     local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
@@ -42,4 +52,20 @@ Date.prototype.toDateInputValue = (function () {
 
 window.onload = function () {
     document.getElementById('value0').value = new Date().toDateInputValue();
+}
+
+function deleteElement(key, postId){
+    var xhr = new XMLHttpRequest();
+    
+    xhr.open('POST', '/delete/' + postId + "/" + key);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            document.getElementById(key).style.display = 'none';
+        }
+        else if (xhr.status !== 200) {
+            alert('Fail');
+        }
+    };
+    xhr.send();
 }

@@ -2,9 +2,9 @@
 {% block content %}
     <h2>View all</h2>
 
-    {% for session in sessions %}
-        <p>{{session.date}}</p>
-        <p><a href="{{url_for('view_detail', session_id=session._id)}}">{{session.summary}}</a></p>
+    {% for post in posts %}
+        <p>{{post['1']['date']}}</p>
+        <p><a href="{{url_for('view_detail', post_id=post._id)}}">{{post['2']['title']}}</a></p>
     {% endfor %}
 
 {% endblock content %}

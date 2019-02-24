@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Add a picture</h2>
+    {% for key,value in post.items() %}
+        {% if key != '_id' %}
+            {% for k,v in post[key].items() %}
+                {% for a,b in post[key][k].items() %}
+
+                    {% if b.startswith('img') %}
+                        <p>{{a}} : <img src="{{url_for('static', filename='img/'+b)}}"></p>
+                    {% else %}
+                        <p>{{a}} : {% if b.startswith('http') %}<a href="{{b}}" target="_blank">{{b}}</a>{% else %}{{b}}{% endif %}</p>
+                    {% endif %}
+
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+    <form enctype="multipart/form-data" action="{{ url_for('add_picture', post_id=post._id) }}" method="post">
+        <div id="study_form">
+            <div id="input_group0">
+                <p><input id="key" type="text" required><input id="value" name="photo" type="file" required></p>
+                <input type='hidden' id="field_to_be_submitted">
+            </div>
+        </div>
+        <input type="submit" value="submit" onclick="addPicture()">
+    </form>
+    
+{% endblock content %}
