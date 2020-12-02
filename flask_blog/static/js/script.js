@@ -128,11 +128,11 @@ document.onclick = function(){
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.onload = function(data) {
         if (xhr.status === 200) {
-            let data = JSON.stringify(post)
+            
         }
         else if (xhr.status !== 200) {
             alert('Fail');
         }
     };
-    xhr.send();
+    xhr.send(JSON.stringify(post));
 }

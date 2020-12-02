@@ -111,5 +111,6 @@ def add_ajax_note(post_id, key, value):
 @app.route("/update_post/<post_id>", methods=["POST"])
 def update_post(post_id):
     print(post_id)
-    print(request.get_json())
+    post = request.get_json()
+    mongo.db.posts.update({"_id": ObjectId(post_id)}, post)
     return "Hi"
